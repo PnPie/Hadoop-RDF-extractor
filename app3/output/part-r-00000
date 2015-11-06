@@ -1,0 +1,11 @@
+<http://example.org/show/218>	14
+<http://www.w3.org/2001/sw/RDFCore/ntriples/>	10
+<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	9
+<http://xmlns.com/foaf/0.1/name>	8
+<http://xmlns.com/foaf/0.1/Person>	8
+<http://example.org/bob/foaf.rdf#me>	6
+<http://example.org/show/location>	6
+<http://example.org/#spiderman>	6
+<http://example.org/alice/foaf.rdf#me>	6
+<http://xmlns.com/foaf/0.1/homepage>	4
+<http://purl.org/dc/elements/1.1/creator>	4

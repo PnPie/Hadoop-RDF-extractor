@@ -1,0 +1,12 @@
+<http://example.org/#spiderman> <http://www.perceive.net/schemas/relationship/enemyOf> <http://example.org/#Sam_Raimi> .
+<http://example.org/#spiderman> <http://www.perceive.net/schemas/relationship/directedBy> <http://example.org/#green-goblin> .
+<http://example.org/show/218> <http://www.w3.org/2000/01/rdf-schema#label> "That Seventies Show" . # literal with XML Schema string datatype
+<http://example.org/show/218> <http://www.w3.org/2000/01/rdf-schema#label> "That Seventies Show" . # same as above
+<http://example.org/show/218> <http://example.org/show/localName> "That Seventies Show"@en . # literal with a language tag
+<http://example.org/show/218> <http://example.org/show/localName> "Cette Série des Années Septante"@fr-be .
+<http://example.org/show/218> <http://example.org/show/location> "UGC Ciné Cité Les Halles"@fr-be .
+<http://example.org/show/218> <http://example.org/show/location> "UGC Lyon Bastille"@fr-be .
+<http://example.org/show/218> <http://example.org/show/location> "Cinéma UGC George V "@fr-be .
+<http://example.org/#spiderman> <http://example.org/text> "This is a multi-line\nliteral with many quotes .
+<http://en.wikipedia.org/wiki/Helium> <http://example.org/elements/atomicNumber> "2" . # xsd:integer
+<http://en.wikipedia.org/wiki/Helium> <http://example.org/elements/specificGravity> "1.663E-4" . # xsd:double

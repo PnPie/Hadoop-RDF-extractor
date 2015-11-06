@@ -1,0 +1,11 @@
+<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	9
+<http://xmlns.com/foaf/0.1/name>	8
+<http://example.org/show/location>	6
+<http://purl.org/dc/elements/1.1/creator>	4
+<http://example.org/show/localName>	4
+<http://www.w3.org/2000/01/rdf-schema#label>	4
+<http://xmlns.com/foaf/0.1/homepage>	4
+<http://www.perceive.net/schemas/relationship/enemyOf>	2
+<http://www.perceive.net/schemas/relationship/directedBy>	2
+<http://purl.org/dc/elements/1.1/publisher>	2
+<http://example.org/text>	2

@@ -1,0 +1,9 @@
+<http://en.wikipedia.org/wiki/Helium>,2
+<http://example.org/#spiderman>,3
+<http://example.org/alice/foaf.rdf#me>,3
+<http://example.org/bob/foaf.rdf#me>,3
+<http://example.org/show/218>,3
+<http://www.w3.org/2001/sw/RDFCore/ntriples/>,5
+_:art,2
+_:bnode1,4
+_:dave,2
