@@ -1,5 +1,5 @@
 # RDF-Statistics-information-extractor
-4 Hadoop Map/Reduce applications to collect and calculate the statistical informations from RDF data given.
+4 Hadoop Map/Reduce applications to collect and extract statistical information from RDF data given.
 
 The given data is RDF(Resource Description Framework) in standard N-Triples format(subject-predicate-object expressions), a W3C proposed standard for conceptual description of information that is implemented in web resources.
 
