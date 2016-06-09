@@ -3,7 +3,7 @@
 
 The given data is RDF(Resource Description Framework) in standard N-Triples format(subject-predicate-object expressions), a W3C proposed standard for conceptual description of information that is implemented in web resources.
 
-## Triple Count
+## N-Triple Count
 
 Calculating the appearance of every URI and literal element in each position(subject, predicate, object)
 
