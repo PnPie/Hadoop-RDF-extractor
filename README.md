@@ -6,6 +6,7 @@ The given data is RDF(Resource Description Framework) in standard N-Triples form
 ## N-Triple Count
 
 Calculating the appearance of every URI and literal element in each position(subject, predicate, object)
+
 **Execution:**
 ```
 bin/TripleCount $(PATH_TO_HADOOP) $(INPUT_FOLDER)
