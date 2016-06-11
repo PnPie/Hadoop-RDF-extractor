@@ -6,7 +6,7 @@ import sys
 # hadoop = "/home/yu/Programs/hadoop-standalone/bin/hadoop"
 if len(sys.argv) != 3:
     print "Please pass 2 arguments as hadoop binary execution file and input folder:" \
-          "\n./TripleCount $(PATH_TO_HADOOP) $(INPUT_FOLDER)"
+          "\nbin/TripleCount $(PATH_TO_HADOOP) $(INPUT_FOLDER)"
     sys.exit(1)
 
 hadoop = sys.argv[1]

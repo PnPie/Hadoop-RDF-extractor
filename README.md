@@ -6,6 +6,10 @@ The given data is RDF(Resource Description Framework) in standard N-Triples form
 ## N-Triple Count
 
 Calculating the appearance of every URI and literal element in each position(subject, predicate, object)
+**Execution:**
+```
+bin/TripleCount $(PATH_TO_HADOOP) $(INPUT_FOLDER)
+```
 
 ## App2
 
@@ -18,8 +22,3 @@ Collecting the 10 most freauently-appearing classes in data set and sorting them
 ## App4
 
 Collecting the first 10 subjects with the largest number of distinct predicates
-
-## Execution
-```
-hadoop jar $(TARGET_JAR) $(CLASS) $(INPUT_DIR) $(OUTPUT_DIR)
-```
