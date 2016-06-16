@@ -9,9 +9,6 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-/**
- * Created by yu on 16/06/16.
- */
 public class TripleCountJob {
   public static void main(String[] args) throws Exception {
     if (args.length != 2) {
