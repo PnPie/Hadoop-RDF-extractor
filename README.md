@@ -1,5 +1,5 @@
 # RDF-Statistics-information-extractor
-4 Hadoop Map/Reduce applications to collect and extract statistical information from RDF data given.
+Hadoop Map/Reduce applications to collect and extract statistical information from RDF data given.
 
 The given data is RDF(Resource Description Framework) in standard N-Triples format(subject-predicate-object expressions), a W3C proposed standard for conceptual description of information that is implemented in web resources.
 
@@ -12,7 +12,7 @@ Calculating the appearance of every URI and literal element in each position(sub
 bin/TripleCount $(PATH_TO_HADOOP) $(INPUT_FOLDER)
 ```
 
-## App2
+## Top K Predicate
 
 Collecting the 10 most frequently-appearing predicates in data set and sorting them.
 
