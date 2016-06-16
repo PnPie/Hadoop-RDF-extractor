@@ -11,7 +11,7 @@ if len(sys.argv) != 3:
 
 hadoop = sys.argv[1]
 jar = "target/word-count-rdf-1.0-SNAPSHOT.jar"
-class_name = "TripleCount"
+class_name = "org.psud.mapreduce.TripleCountJob"
 input_foler = sys.argv[2]
 output_folder = "output"
 
