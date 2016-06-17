@@ -17,9 +17,10 @@ public class TripleCountJob {
     }
 
     Configuration conf = new Configuration();
+    FileSystem fs = FileSystem.getLocal(conf);
 
     //Create a TripleCountMapper/TripleCountReducer job
-    Job job = new Job(conf, "Triple Count RDF");
+    Job job = Job.getInstance(conf, "Triple Count");
 
     //Set configuration
     job.setJarByClass(org.psud.mapreduce.TripleCountJob.class);
@@ -33,12 +34,11 @@ public class TripleCountJob {
     //Set Input and Output path
     FileInputFormat.addInputPath(job, new Path(args[0]));
     Path output = new Path(args[1]);
-    FileSystem fs = FileSystem.getLocal(conf);
     if (fs.exists(output))
       fs.delete(output, true);
     FileOutputFormat.setOutputPath(job, output);
 
     //Execution
-    System.exit(job.waitForCompletion(true) ? 0 : 1);
+    System.out.println(job.waitForCompletion(true) ? "Execution succeeded" : "Execution failed");
   }
 }

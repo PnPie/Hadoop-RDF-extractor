@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+
+import os
+import sys
+
+if len(sys.argv) != 2:
+    print "please input hadoop binary path."
+    sys.exit(1)
+
+ourVersion = "1.0-SNAPSHOT"
+hadoop = sys.argv[1]
+# hadoop = "/home/yu/Programs/hadoop-standalone/bin/hadoop"
+jar = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "target",
+                                   "rdf-Info-Extractor-%s.jar" % ourVersion))
+class_name = "org.psud.mapreduce.TripleCountJob"
+input_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "input")
+output_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "output")
+
+os.system("%s jar %s %s %s %s" % (hadoop, jar, class_name, input_folder, output_folder))

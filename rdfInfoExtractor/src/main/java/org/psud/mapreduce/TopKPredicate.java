@@ -15,7 +15,8 @@ public class TopKPredicate {
    * Output: (number of appearances in predicate, word) pair
    *
    */
-  public class TopKPredicateMapper extends Mapper<Object, Text, IntWritable, Text> {
+  public static class TopKPredicateMapper
+    extends Mapper<Object, Text, IntWritable, Text> {
     public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
       int predicateColumn = 2; // The second column of InputSplit
       String line = value.toString();
@@ -29,7 +30,7 @@ public class TopKPredicate {
    * Output: top-10 predicates
    *
    */
-  public class TopKPredicateReducer
+  public static class TopKPredicateReducer
     extends Reducer<IntWritable, Text, Text, IntWritable> {
     private final int K = 10;
     private TreeMap<Integer, List<String>> map =
