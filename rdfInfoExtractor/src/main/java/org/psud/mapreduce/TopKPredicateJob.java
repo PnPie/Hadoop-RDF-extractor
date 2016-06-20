@@ -24,8 +24,8 @@ public class TopKPredicateJob {
     FileSystem fs = FileSystem.getLocal(conf);
     Job job1 = Job.getInstance(conf, "Triple Count");
     job1.setJarByClass(org.psud.mapreduce.TripleCountJob.class);
-    job1.setMapperClass(org.psud.mapreduce.TripleCount.TripleCountMapper.class);
-    job1.setReducerClass(org.psud.mapreduce.TripleCount.TripleCountReducer.class);
+    job1.setMapperClass(RDFExtractor.TripleCountMapper.class);
+    job1.setReducerClass(RDFExtractor.TripleCountReducer.class);
     job1.setMapOutputKeyClass(Text.class);
     job1.setMapOutputValueClass(IntWritable.class);
     FileInputFormat.addInputPath(job1, new Path(args[0]));
@@ -37,8 +37,8 @@ public class TopKPredicateJob {
     if (job1.waitForCompletion(true)) {
       Job job2 = Job.getInstance(conf, "TopKPredicate");
       job2.setJarByClass(org.psud.mapreduce.TopKPredicateJob.class);
-      job2.setMapperClass(org.psud.mapreduce.TopKPredicate.TopKPredicateMapper.class);
-      job2.setReducerClass(org.psud.mapreduce.TopKPredicate.TopKPredicateReducer.class);
+      job2.setMapperClass(org.psud.mapreduce.RDFExtractor.TopKPredicateMapper.class);
+      job2.setReducerClass(org.psud.mapreduce.RDFExtractor.TopKReducer.class);
       job2.setMapOutputKeyClass(IntWritable.class);
       job2.setMapOutputValueClass(Text.class);
       FileInputFormat.addInputPath(job2, new Path(args[1]));

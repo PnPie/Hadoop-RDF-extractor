@@ -24,8 +24,8 @@ public class TripleCountJob {
 
     //Set configuration
     job.setJarByClass(org.psud.mapreduce.TripleCountJob.class);
-    job.setMapperClass(org.psud.mapreduce.TripleCount.TripleCountMapper.class);
-    job.setReducerClass(org.psud.mapreduce.TripleCount.TripleCountReducer.class);
+    job.setMapperClass(RDFExtractor.TripleCountMapper.class);
+    job.setReducerClass(RDFExtractor.TripleCountReducer.class);
 
     //Set the map output class
     job.setMapOutputKeyClass(Text.class);
