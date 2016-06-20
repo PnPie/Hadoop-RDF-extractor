@@ -9,17 +9,23 @@ Calculating the appearance of every URI and literal element in each position(sub
 
 **Execution:**
 ```
-bin/TripleCount $(PATH_TO_HADOOP) $(INPUT_FOLDER)
+bin/triplecount $(PATH_TO_HADOOP) $(INPUT_FOLDER)
 ```
 
 ## Top K Predicate
 
 Collecting the 10 most frequently-appearing predicates in data set and sorting them.
 
-## App3
+**Execution:**
+```
+bin/topkpredicate $(PATH_TO_HADOOP) $(INPUT_FOLDER)
+```
 
-Collecting the 10 most freauently-appearing classes in data set and sorting them
-
-## App4
+## Subjects with most predicates
 
 Collecting the first 10 subjects with the largest number of distinct predicates
+
+**Execution:**
+```
+bin/subpredicates $(PATH_TO_HADOOP) $(INPUT_FOLDER)
+```
