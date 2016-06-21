@@ -12,7 +12,7 @@ Calculating the appearance of every URI and literal element in each position(sub
 bin/triplecount $(PATH_TO_HADOOP) $(INPUT_FOLDER)
 ```
 
-## Top K Predicate
+## Top K Predicates
 
 Collecting the 10 most frequently-appearing predicates in data set and sorting them.
 
