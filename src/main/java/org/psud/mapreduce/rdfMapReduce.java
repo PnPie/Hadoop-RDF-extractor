@@ -15,22 +15,17 @@ import java.util.*;
  * Hadoop initiates its Mapper and Reducer by reflection, so it
  * needs it to be static to know the class while compiling.
  */
-public class RDFExtractor {
+public class rdfMapReduce {
   /**
-   * Input:  text file
-   * InputSplit: n-triple (subjcet, predicate, object)
-   * <p>
-   * Output: (word, number) pair
-   * number == zero: subject
-   * number == one : predicate
-   * number == tow : object
+   * Input: < ,(subject, predicate, object)>
+   * Output: < word, (one|two|three)>
    * <p>
    * Hadoop split-up input files into logical
    * {@link org.apache.hadoop.mapreduce.InputSplit}
    * by calling {@link org.apache.hadoop.mapreduce.InputFormat#getSplits(JobContext)}
    * each of which is assigned to a Mapper
    */
-  public static class TripleCountMapper
+  public static class WordRecognitionMapper
     extends Mapper<Object, Text, Text, IntWritable> {
     private final static int COLUMNS = 3;
     private final static IntWritable zero = new IntWritable(0);
@@ -40,7 +35,7 @@ public class RDFExtractor {
 
     /**
      * @param key
-     * @param value   an InputSplit (by default a line):w
+     * @param value   an InputSplit (by default a line)
      * @param context 通过context读取键值对,并将结果(键值对)写在磁盘上
      * @throws IOException
      * @throws InterruptedException
@@ -70,24 +65,8 @@ public class RDFExtractor {
   }
 
   /**
-   * Input:  text file (word, number of appearances in subject, in predicate, in object)
-   * InputSplit: getSplits()方法默认按行切分返回
-   * Output: (number of appearances in predicate, word) pair
-   */
-  public static class TopKPredicateMapper
-    extends Mapper<Object, Text, IntWritable, Text> {
-    public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-      int predicateColumn = 2; // The second column of InputSplit
-      String line = value.toString();
-      String[] records = line.split(",");
-      context.write(new IntWritable(Integer.parseInt(records[predicateColumn])), new Text(records[0]));
-    }
-  }
-
-  /**
-   * Input:  text file
-   * InputSpit: n-triple
-   * Output: (subject, predicate) pair
+   * Input:  < , (subject, predicate, object)>
+   * Output: <subject, predicate>
    */
   public static class SubjectPredicateMapper
     extends Mapper<Object, Text, Text, Text> {
@@ -120,9 +99,8 @@ public class RDFExtractor {
   }
 
   /**
-   * Input:  text file
-   * InputSplit: subject, number of distinct predicates
-   * Output: (number of distinct predicates, subject) pair
+   * Input:  < word, number >
+   * Output: < number, word >
    */
   public static class InverseMapper extends
     Mapper<Object, Text, IntWritable, Text> {
@@ -135,8 +113,8 @@ public class RDFExtractor {
   }
 
   /**
-   * Input:  (word, number) pair
-   * Output: word, number of appearances in subject, in predicate, in object
+   * Input: < word, (one|two|three)>
+   * Output: < (word, number, number, number), >
    */
   public static class TripleCountReducer
     extends Reducer<Text, IntWritable, Text, Text> {
@@ -163,54 +141,81 @@ public class RDFExtractor {
   }
 
   /**
-   * Input:  (number of appearances in predicate, word) pair
-   * Output: top-10 predicates
+   * Input:  < word, (one|two|three)
+   * Output: < number, word >
    */
-  public static class TopKReducer
-    extends Reducer<IntWritable, Text, Text, IntWritable> {
-    private final int K = 10;
-    private TreeMap<Integer, List<String>> map =
-      new TreeMap<Integer, List<String>>(Collections.reverseOrder());
+  public static class TopKPredicateReducer
+    extends Reducer<Text, IntWritable, IntWritable, Text> {
+    private Map<Text, Integer> map = new HashMap<Text, Integer>();
 
-    public void reduce(IntWritable key, Iterable<Text> values, Context context)
-      throws IOException, InterruptedException {
-      for (Text value : values) {
-        if (map.containsKey(key.get())) {
-          map.get(key.get()).add(value.toString());
-        } else {
-          List<String> list = new ArrayList<String>();
-          list.add(value.toString());
-          map.put(key.get(), list);
-        }
-        if (map.size() > K) {
-          map.remove(map.lastKey());
+    public void reduce(Text key, Iterable<IntWritable> values, Context context) {
+      for (IntWritable value : values) {
+        if (value.get() == 1) {
+          if (map.containsKey(key))
+            map.put(key, map.get(key) + 1);
+          else
+            map.put(key, 1);
         }
       }
     }
 
-    /*
-     * Called after the Reduce task
-     *
-     */
-    protected void cleanup(Context context) throws IOException, InterruptedException {
-      Iterator<Integer> it = map.keySet().iterator();
-      for (int i = 0; i < K; i++) {
-        if (it.hasNext()) {
-          int cnt = it.next();
-          for (String str : map.get(cnt))
-            context.write(new Text(str), new IntWritable(cnt));
+    protected void cleanup(Context context)
+      throws IOException, InterruptedException {
+      TreeMap<Integer, Set<Text>> treeMap =
+        new TreeMap<Integer, Set<Text>>(Collections.<Integer>reverseOrder());
+      for (Map.Entry<Text, Integer> entry : map.entrySet()) {
+        if (treeMap.containsKey(entry.getValue())) {
+          treeMap.get(entry.getValue()).add(entry.getKey());
         } else {
-          break;
+          Set<Text> set = new HashSet<Text>();
+          set.add(entry.getKey());
+          treeMap.put(entry.getValue(), set);
         }
       }
+      writeMap(context, treeMap);
     }
   }
 
   /**
-   * Input:  (subject, predicate) pair
-   * Output: subject, number of distinct predicates
+   * Input:  < number, word >
+   * Output: top-10
    */
-  public static class SubGroupPredicate
+  public static class SortReducer
+    extends Reducer<IntWritable, Text, Text, IntWritable> {
+    private final int K = 10;
+    private TreeMap<Integer, Set<Text>> treeMap =
+      new TreeMap<Integer, Set<Text>>(Collections.<Integer>reverseOrder());
+
+    public void reduce(IntWritable key, Iterable<Text> values, Context context)
+      throws IOException, InterruptedException {
+      for (Text value : values) {
+        if (treeMap.containsKey(key.get())) {
+          treeMap.get(key.get()).add(value);
+        } else {
+          Set<Text> set = new HashSet<Text>();
+          set.add(value);
+          treeMap.put(key.get(), set);
+        }
+        if (treeMap.size() > K) {
+          treeMap.remove(treeMap.lastKey());
+        }
+      }
+    }
+
+    /**
+     * Called after the Reduce task
+     */
+    protected void cleanup(Context context)
+      throws IOException, InterruptedException {
+      writeMap(context, treeMap);
+    }
+  }
+
+  /**
+   * Input:  <subject, predicate>
+   * Output: <subject, COUNT DISTINCT (predicate)>
+   */
+  public static class CountDistValuesReducer
     extends Reducer<Text, Text, Text, IntWritable> {
     public void reduce(Text key, Iterable<Text> values, Context context)
       throws IOException, InterruptedException {
@@ -219,5 +224,19 @@ public class RDFExtractor {
         cnt++;
       context.write(new Text(key.toString() + "," + cnt), null);
     }
+  }
+
+  /**
+   * Write contents of the map in disk through context
+   * @param context
+   * @param map
+   * @throws IOException
+   * @throws InterruptedException
+   */
+  protected static void writeMap(Reducer.Context context, Map<Integer, Set<Text>> map)
+    throws IOException, InterruptedException {
+    for (Map.Entry<Integer, Set<Text>> entry : map.entrySet())
+      for (Text text : entry.getValue())
+        context.write(text, new IntWritable(entry.getKey()));
   }
 }

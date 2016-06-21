@@ -19,13 +19,13 @@ public class TripleCountJob {
     Configuration conf = new Configuration();
     FileSystem fs = FileSystem.getLocal(conf);
 
-    //Create a TripleCountMapper/TripleCountReducer job
+    //Create a WordRecognitionMapper/TripleCountReducer job
     Job job = Job.getInstance(conf, "Triple Count");
 
     //Set configuration
     job.setJarByClass(org.psud.mapreduce.TripleCountJob.class);
-    job.setMapperClass(RDFExtractor.TripleCountMapper.class);
-    job.setReducerClass(RDFExtractor.TripleCountReducer.class);
+    job.setMapperClass(rdfMapReduce.WordRecognitionMapper.class);
+    job.setReducerClass(rdfMapReduce.TripleCountReducer.class);
 
     //Set the map output class
     job.setMapOutputKeyClass(Text.class);
